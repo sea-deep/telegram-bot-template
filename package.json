@@ -1,0 +1,29 @@
+{
+  "name": "reefbot",
+  "version": "1.0.0",
+  "description": "A telegram bot to make the groupchats fun...?",
+  "keywords": [
+    "reef",
+    "telegram",
+    "telegraf"
+  ],
+  "license": "ISC",
+  "author": "sea-deep",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc && node dist/index.js",
+    "clean": "rimraf dist",
+    "build": "npm run clean && npx tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "glob": "^11.0.1",
+    "telegraf": "^4.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "rimraf": "^5.0.10"
+  }
+}
