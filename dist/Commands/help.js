@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const glob_1 = require("glob");
 const node_url_1 = require("node:url");
+const markup_1 = require("telegraf/markup");
 let commands = [];
 function loadCommands() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -31,6 +32,6 @@ exports.default = {
     name: "help",
     description: "Show the available commands",
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
-        yield ctx.replyWithMarkdownV2("__*Here are the available commands:*__\n" + commands.map((command) => `/${command.name} \\- ${command.description}`).join("\n"));
+        yield ctx.replyWithMarkdownV2("__*Here are the available commands:*__\n" + commands.map((command) => `/${command.name} \\- ${command.description}`).join("\n"), (0, markup_1.removeKeyboard)());
     })
 };

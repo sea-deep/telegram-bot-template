@@ -12,12 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const telegraf_1 = require("telegraf");
 exports.default = {
     name: "btn",
-    descrription: "Test button",
+    description: "Test button",
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
         yield ctx.reply("Hello World!", telegraf_1.Markup.keyboard([
             ["Hello", "World"],
-            ["Test", "Button"]
+            ["Test", "Button", "Uhhh"],
+            ["One", "Two"]
         ])
-            .resize());
+            .oneTime() // Remove the keyboard after the user clicks a button
+            .resize() // Resize the keyboard to fit the screen
+        );
     })
 };

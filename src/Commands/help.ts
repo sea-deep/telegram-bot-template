@@ -1,7 +1,8 @@
-import { Context, Telegraf } from "telegraf";
+import { Context, Markup, Telegraf } from "telegraf";
 import { Command } from "../Utils/commandHandler";
 import { glob } from "glob";
 import { pathToFileURL } from "node:url";
+import { removeKeyboard } from "telegraf/markup";
 
 
 let commands: Array<Object> = [];
@@ -24,7 +25,6 @@ export default {
     name: "help",
     description: "Show the available commands",
     execute: async (ctx: Context, bot: Telegraf<Context>) => {
-        await ctx.replyWithMarkdownV2("__*Here are the available commands:*__\n" + commands.map((command: any) => `/${command.name} \\- ${command.description}`).join("\n"));
-
+        await ctx.replyWithMarkdownV2("__*Here are the available commands:*__\n" + commands.map((command: any) => `/${command.name} \\- ${command.description}`).join("\n"), removeKeyboard());
     }
 } as Command;
