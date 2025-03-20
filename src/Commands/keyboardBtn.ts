@@ -2,14 +2,13 @@ import { Context, Markup, Telegraf } from "telegraf";
 import { Command } from "../Utils/commandHandler";
 
 export default {
-    name: "btn",
-    description: "Test button",
+    name: "keyboard",
+    description: "Keyboard buttons example",
     execute: async (ctx: Context, bot: Telegraf<Context>) => {
         await ctx.reply("Hello World!", 
             Markup.keyboard([
-               [Markup.button.text("Hello")],
-                ["Test", "Button", "Uhhh"],
-                ["One", "Two"]
+               [Markup.button.callback("Hello", "hello"), Markup.button.callback("World", "world")],
+               [Markup.button.callback("Foo", "foo"), Markup.button.callback("Bar", "bar")]
             ])
             .oneTime() // Remove the keyboard after the user clicks a button
             .resize() // Resize the keyboard to fit the screen
