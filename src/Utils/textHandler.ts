@@ -31,7 +31,7 @@ async function loadTexts() {
             try {
                 bot.hears(textName, async (ctx) => {
                     try {
-                        await text.execute(ctx, bot);
+                      await text.execute(ctx, bot);
                     } catch (err) {
                         console.error(`[TextHandler] - Error in "${textName}":\n`, err);
                     }

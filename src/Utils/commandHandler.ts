@@ -25,9 +25,9 @@ async function loadCommands() {
 
       const commandName = command.name;
       try {
-        bot.command(commandName, (ctx: Context) => {
+        bot.command(commandName, async (ctx: Context) => {
           try {
-            command.execute(ctx, bot)
+            await command.execute(ctx, bot)
           } catch (error) {
             console.error(`[CommandHandler] -`, error);
           }

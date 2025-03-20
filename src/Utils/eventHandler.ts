@@ -25,9 +25,9 @@ async function loadEvents() {
       if (!eventType) continue;
 
       try {
-        bot.on(eventType, (ctx: Context) => {
+        bot.on(eventType, async (ctx: Context) => {
           try {
-            event.execute(ctx, bot)
+            await event.execute(ctx, bot)
           }
           catch (error) {
             console.error(`[EventHandler] -`, error);

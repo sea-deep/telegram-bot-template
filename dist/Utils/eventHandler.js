@@ -26,14 +26,16 @@ function loadEvents() {
                 if (!eventType)
                     continue;
                 try {
-                    index_1.bot.on(eventType, (ctx) => {
+                    index_1.bot.on(eventType, (ctx) => __awaiter(this, void 0, void 0, function* () {
                         try {
-                            event.execute(ctx, index_1.bot);
+                            if (ctx.text == "🏠 Hello")
+                                return;
+                            yield event.execute(ctx, index_1.bot);
                         }
                         catch (error) {
                             console.error(`[EventHandler] -`, error);
                         }
-                    });
+                    }));
                 }
                 catch (error) {
                     console.error(`[EventHandler] -`, error);
