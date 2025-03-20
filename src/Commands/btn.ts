@@ -1,4 +1,5 @@
 import { Context, Markup, Telegraf } from "telegraf";
+import { Command } from "../Utils/commandHandler";
 
 export default {
     name: "btn",
@@ -6,7 +7,7 @@ export default {
     execute: async (ctx: Context, bot: Telegraf<Context>) => {
         await ctx.reply("Hello World!", 
             Markup.keyboard([
-                ["Hello", "World"],
+               [Markup.button.text("Hello")],
                 ["Test", "Button", "Uhhh"],
                 ["One", "Two"]
             ])
@@ -14,4 +15,4 @@ export default {
             .resize() // Resize the keyboard to fit the screen
         );
     }
-}
+} as Command;

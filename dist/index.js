@@ -40,6 +40,7 @@ const telegraf_1 = require("telegraf");
 exports.bot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
 import("./Utils/commandHandler.js");
 import("./Utils/eventHandler.js");
+import("./Utils/actionHandler.js");
 console.log("[INFO] - Bot is online");
 exports.bot.launch();
 process.once('SIGINT', () => exports.bot.stop('SIGINT'));

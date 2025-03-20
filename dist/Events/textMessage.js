@@ -11,8 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const filters_1 = require("telegraf/filters");
 exports.default = {
-    type: (0, filters_1.message)("text"),
+    type: (0, filters_1.message)('text'),
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(ctx.text);
+        var _a;
+        const msg = ctx.message;
+        console.log((_a = msg.from) === null || _a === void 0 ? void 0 : _a.first_name, "said", msg.text);
     })
 };

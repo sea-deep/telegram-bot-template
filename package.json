@@ -1,7 +1,7 @@
 {
-  "name": "reefbot",
+  "name": "telegram-bot-template",
   "version": "1.0.0",
-  "description": "A telegram bot to make the groupchats fun...?",
+  "description": "A simple template for creating a Telegram bots using Telegraf",
   "keywords": [
     "reef",
     "telegram",

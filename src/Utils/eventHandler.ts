@@ -3,9 +3,10 @@ import { pathToFileURL } from "node:url";
 import { bot } from "../index";
 import { Context, Telegraf } from "telegraf";
 
+
 export interface Event {
   type: any;
-  execute: (ctx: Context, bot: Telegraf<Context>) => Promise<void>;
+  execute: (ctx: Context, bot: Telegraf<Context>) => Promise<any>;
   disabled?: boolean;
 }
 
@@ -24,7 +25,15 @@ async function loadEvents() {
       if (!eventType) continue;
 
       try {
-        bot.on(eventType, (ctx: Context) => event.execute(ctx, bot));
+        bot.on(eventType, (ctx: Context) => {
+          try {
+            event.execute(ctx, bot)
+          }
+          catch (error) {
+            console.error(`[EventHandler] -`, error);
+          }
+        }
+        );
       } catch (error) {
         console.error(`[EventHandler] -`, error);
       }

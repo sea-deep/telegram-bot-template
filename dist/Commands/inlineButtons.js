@@ -11,16 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const telegraf_1 = require("telegraf");
 exports.default = {
-    name: "btn",
-    description: "Test button",
+    name: "btn2",
+    description: "Inline Buttons",
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
-        yield ctx.reply("Hello World!", telegraf_1.Markup.keyboard([
-            [telegraf_1.Markup.button.text("Hello")],
-            ["Test", "Button", "Uhhh"],
-            ["One", "Two"]
-        ])
-            .oneTime() // Remove the keyboard after the user clicks a button
-            .resize() // Resize the keyboard to fit the screen
-        );
+        var _a;
+        yield ctx.reply(`Hello ${(_a = ctx.from) === null || _a === void 0 ? void 0 : _a.first_name}!\nThis command has inline buttons!`, telegraf_1.Markup.inlineKeyboard([
+            [telegraf_1.Markup.button.callback("Button 1", "btn_1"), telegraf_1.Markup.button.callback("Button 2", "btn_2")],
+            [telegraf_1.Markup.button.callback("Button 3", "btn_3"), telegraf_1.Markup.button.callback("Button 4", "btn_4")],
+            [telegraf_1.Markup.button.callback("Button 5", "notabutton"), telegraf_1.Markup.button.callback("Button 6", "faceincel")],
+        ]));
     })
 };

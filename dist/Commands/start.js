@@ -13,7 +13,9 @@ exports.default = {
     name: "start",
     description: "Start the bot",
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
-        yield ctx.reply(`Hello ${(_a = ctx.from) === null || _a === void 0 ? void 0 : _a.first_name}. I'm Hatsune Miku!\nUse /help to see the available commands.`);
+        var _a, _b, _c;
+        if (((_a = ctx.message) === null || _a === void 0 ? void 0 : _a.chat.type) !== "private")
+            return ctx.replyWithMarkdownV2("_Shall we talk in private?_ UwU <3");
+        yield ctx.reply(`Hello ${(_b = ctx.from) === null || _b === void 0 ? void 0 : _b.first_name}. I'm ${(_c = bot.botInfo) === null || _c === void 0 ? void 0 : _c.first_name}!\nUse /help to see the available commands.`);
     })
 };

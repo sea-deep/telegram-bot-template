@@ -25,7 +25,14 @@ function loadCommands() {
                 }
                 const commandName = command.name;
                 try {
-                    index_1.bot.command(commandName, (ctx) => command.execute(ctx, index_1.bot));
+                    index_1.bot.command(commandName, (ctx) => {
+                        try {
+                            command.execute(ctx, index_1.bot);
+                        }
+                        catch (error) {
+                            console.error(`[CommandHandler] -`, error);
+                        }
+                    });
                 }
                 catch (error) {
                     console.error(`[CommandHandler] -`, error);

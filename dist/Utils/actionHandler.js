@@ -15,34 +15,34 @@ const index_1 = require("../index");
 function loadEvents() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const Files = yield (0, glob_1.glob)(`${process.cwd()}/dist/Events/**/*.js`);
+            const Files = yield (0, glob_1.glob)(`${process.cwd()}/dist/Actions/**/*.js`);
             for (let file of Files) {
                 file = (0, node_url_1.pathToFileURL)(file).toString();
-                const eventFile = (yield import(file)).default;
-                const event = eventFile.default;
-                if (event.disabled)
+                const actionFile = (yield import(file)).default;
+                const action = actionFile.default;
+                if (action.disabled)
                     continue;
-                const eventType = event.type;
-                if (!eventType)
+                const actionName = action.name;
+                if (!actionName)
                     continue;
                 try {
-                    index_1.bot.on(eventType, (ctx) => {
+                    index_1.bot.action(actionName, (ctx) => __awaiter(this, void 0, void 0, function* () {
                         try {
-                            event.execute(ctx, index_1.bot);
+                            yield action.execute(ctx, index_1.bot);
                         }
-                        catch (error) {
-                            console.error(`[EventHandler] -`, error);
+                        catch (err) {
+                            console.error(`[ActionHandler] - Error in "${actionName}":\n`, err);
                         }
-                    });
+                    }));
                 }
                 catch (error) {
-                    console.error(`[EventHandler] -`, error);
+                    console.error(`[ActionHandler] -`, error);
                 }
             }
-            console.info(`[INFO] - Events Loaded`);
+            console.info(`[INFO] - Actions Loaded`);
         }
         catch (err) {
-            console.error(`[EventHandler] -`, err);
+            console.error(`[ActionHandler] -`, err);
         }
     });
 }

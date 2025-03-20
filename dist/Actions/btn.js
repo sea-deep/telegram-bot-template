@@ -9,18 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const telegraf_1 = require("telegraf");
 exports.default = {
-    name: "btn",
-    description: "Test button",
+    name: /btn_(.+)/, // Buttons with the format btn_* will trigger this action
+    // ctx.match[1] will contain the value of the wildcard
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
-        yield ctx.reply("Hello World!", telegraf_1.Markup.keyboard([
-            [telegraf_1.Markup.button.text("Hello")],
-            ["Test", "Button", "Uhhh"],
-            ["One", "Two"]
-        ])
-            .oneTime() // Remove the keyboard after the user clicks a button
-            .resize() // Resize the keyboard to fit the screen
-        );
+        var _a;
+        yield ctx.reply(`You clicked ` + ((_a = ctx.match) === null || _a === void 0 ? void 0 : _a[1]));
+        ctx.answerCbQuery(); // Stops the loading animation
     })
 };
