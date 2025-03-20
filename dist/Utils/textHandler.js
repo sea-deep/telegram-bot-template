@@ -12,38 +12,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const glob_1 = require("glob");
 const node_url_1 = require("node:url");
 const index_1 = require("../index");
-function loadActions() {
+function loadTexts() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const Files = yield (0, glob_1.glob)(`${process.cwd()}/dist/Actions/**/*.js`);
+            const Files = yield (0, glob_1.glob)(`${process.cwd()}/dist/TextTriggers/**/*.js`);
             for (let file of Files) {
                 file = (0, node_url_1.pathToFileURL)(file).toString();
-                const actionFile = (yield import(file)).default;
-                const action = actionFile.default;
-                if (action.disabled)
+                const textFile = (yield import(file)).default;
+                const text = textFile.default;
+                if (text.disabled)
                     continue;
-                const actionName = action.name;
-                if (!actionName)
+                const textName = text.name;
+                if (!textName)
                     continue;
                 try {
-                    index_1.bot.action(actionName, (ctx) => __awaiter(this, void 0, void 0, function* () {
+                    index_1.bot.hears(textName, (ctx) => __awaiter(this, void 0, void 0, function* () {
                         try {
-                            yield action.execute(ctx, index_1.bot);
+                            yield text.execute(ctx, index_1.bot);
                         }
                         catch (err) {
-                            console.error(`[ActionHandler] - Error in "${actionName}":\n`, err);
+                            console.error(`[TextHandler] - Error in "${textName}":\n`, err);
                         }
                     }));
                 }
                 catch (error) {
-                    console.error(`[ActionHandler] -`, error);
+                    console.error(`[TextHandler] -`, error);
                 }
             }
-            console.info(`[INFO] - Actions Loaded`);
+            console.info(`[INFO] - Text Triggers Loaded`);
         }
         catch (err) {
-            console.error(`[ActionHandler] -`, err);
+            console.error(`[TextHandler] -`, err);
         }
     });
 }
-loadActions();
+loadTexts();

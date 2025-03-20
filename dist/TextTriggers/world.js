@@ -9,16 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const telegraf_1 = require("telegraf");
+const markup_1 = require("telegraf/markup");
 exports.default = {
-    name: "btn2",
-    description: "Inline Buttons",
+    name: "🌴 World",
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        yield ctx.reply(`Hello ${(_a = ctx.from) === null || _a === void 0 ? void 0 : _a.first_name}!\nThis command has inline buttons!`, telegraf_1.Markup.inlineKeyboard([
-            [telegraf_1.Markup.button.callback("Button 1", "btn_1"), telegraf_1.Markup.button.callback("Button 2", "btn_2")],
-            [telegraf_1.Markup.button.callback("Button 3", "btn_3"), telegraf_1.Markup.button.callback("Button 4", "btn_4")],
-            [telegraf_1.Markup.button.callback("Button 5", "notabutton"), telegraf_1.Markup.button.callback("Button 6", "faceincel")],
-        ]));
+        yield ctx.reply("This button does nothing :(", (0, markup_1.removeKeyboard)());
+        console.log((_a = ctx.from) === null || _a === void 0 ? void 0 : _a.first_name, "clicked the 🌴 World button");
     })
 };

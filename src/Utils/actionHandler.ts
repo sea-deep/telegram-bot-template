@@ -14,7 +14,7 @@ export interface Action {
     disabled?: boolean;
 }
 
-async function loadEvents() {
+async function loadActions() {
     try {
         const Files = await glob(`${process.cwd()}/dist/Actions/**/*.js`);
 
@@ -46,4 +46,4 @@ async function loadEvents() {
     }
 }
 
-loadEvents();
+loadActions();

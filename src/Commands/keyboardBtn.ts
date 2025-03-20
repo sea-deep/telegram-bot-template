@@ -7,8 +7,8 @@ export default {
     execute: async (ctx: Context, bot: Telegraf<Context>) => {
         await ctx.reply("Hello World!", 
             Markup.keyboard([
-               [Markup.button.callback("Hello", "hello"), Markup.button.callback("World", "world")],
-               [Markup.button.callback("Foo", "foo"), Markup.button.callback("Bar", "bar")]
+                ["🏠 Hello", "🌴 World"],
+                ["🌞 Foo", "🏝️ Bar"]
             ])
             .oneTime() // Remove the keyboard after the user clicks a button
             .resize() // Resize the keyboard to fit the screen

@@ -9,12 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const filters_1 = require("telegraf/filters");
+const telegraf_1 = require("telegraf");
 exports.default = {
-    type: (0, filters_1.message)('text'),
+    name: "keyboard",
+    description: "Keyboard buttons example",
     execute: (ctx, bot) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a;
-        const msg = ctx.message;
-        console.log((_a = msg.from) === null || _a === void 0 ? void 0 : _a.first_name, "said", msg.text);
+        yield ctx.reply("Hello World!", telegraf_1.Markup.keyboard([
+            ["🏠 Hello", "🌴 World"],
+            ["🌞 Foo", "🏝️ Bar"]
+        ])
+            .oneTime() // Remove the keyboard after the user clicks a button
+            .resize() // Resize the keyboard to fit the screen
+        );
     })
 };
