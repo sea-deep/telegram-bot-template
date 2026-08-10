@@ -20,7 +20,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.4.2",
     "glob": "^13.0.6",
     "telegraf": "^4.16.3",
     "zod": "^4.4.3"
