@@ -3,25 +3,23 @@ import { env } from "./utilities/env.js";
 import { Logger } from "./helpers/Logger.js";
 import { loadCommands } from "./utilities/commandHandler.js";
 import { loadEvents } from "./utilities/eventHandler.js";
-import { loadActions } from "./utilities/actionHandler.js";
+import { loadInlineButtons } from "./utilities/inlineButtonHandler.js";
+import { loadKeyboardButtons } from "./utilities/keyboardButtonHandler.js";
 import { loadTextTriggers } from "./utilities/textHandler.js";
 Logger.info("Initializing Telegram Bot...");
 export const bot = new Telegraf(env.BOT_TOKEN);
-// Monkey-patch bot.command to prevent its use and enforce our custom robust router
-bot.command = () => {
-    throw new Error("⚠️ Telegraf's native `bot.command` is disabled in this repository to prevent middleware order collisions. Please create a command file in `src/commands/` instead!");
-};
 // Global Error Catching Middleware
 bot.catch((err, ctx) => {
     Logger.error(`Unhandled error on update ${ctx.updateType}:`, err);
 });
 async function main() {
     try {
-        // Load all dynamic handlers
-        await loadCommands(bot);
-        await loadEvents(bot);
-        await loadActions(bot);
-        await loadTextTriggers(bot);
+        // Load all dynamic handlers strictly in this order to prevent middleware collisions:
+        await loadCommands(bot); // 1. Slash Commands (bot.on('message') router)
+        await loadInlineButtons(bot); // 2. Callback Queries (bot.action)
+        await loadKeyboardButtons(bot); // 3. Reply Keyboards (bot.hears)
+        await loadTextTriggers(bot); // 4. Regular Text Triggers (bot.hears)
+        await loadEvents(bot); // 5. Catch-all Events (bot.on)
         // Launch Telegraf Bot
         await bot.launch();
         Logger.success("🚀 Telegram Bot is online and polling for updates!");

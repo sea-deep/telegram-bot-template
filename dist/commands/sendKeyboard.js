@@ -1,6 +1,6 @@
 import { Markup } from "telegraf";
-const keyboardBtnCommand = {
-    name: "keyboard",
+const sendKeyboardCommand = {
+    name: "sendkeyboard",
     description: "Reply keyboard buttons example",
     category: "Interactive",
     execute: async (ctx, bot, args) => {
@@ -12,4 +12,4 @@ const keyboardBtnCommand = {
             .resize());
     },
 };
-export default keyboardBtnCommand;
+export default sendKeyboardCommand;

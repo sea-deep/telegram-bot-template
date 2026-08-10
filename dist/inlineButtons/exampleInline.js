@@ -1,5 +1,5 @@
 import { Logger } from "../helpers/Logger.js";
-const btnAction = {
+const exampleInline = {
     name: /btn_(.+)/,
     execute: async (ctx) => {
         const buttonId = ctx.match?.[1] || "unknown";
@@ -8,4 +8,4 @@ const btnAction = {
         await ctx.answerCbQuery();
     },
 };
-export default btnAction;
+export default exampleInline;
