@@ -11,6 +11,7 @@ export interface Command {
   args?: boolean;
   ownerOnly?: boolean;
   developerOnly?: boolean;
+  hideFromMenu?: boolean;
   options?: CommandOptions;
   disabled?: boolean;
   execute: (ctx: Context, bot: Telegraf<Context>, args: string[]) => Promise<void> | void;

@@ -27,6 +27,7 @@ Where to place your code:
 
 This template abstracts away the boilerplate of registering commands and strict middleware routing for the Telegram API. 
 
+- **Automatic Command Syncing**: Command metadata (descriptions and names) automatically sync to the Telegram UI menu when the bot starts. You can exclude specific commands using the `hideFromMenu` property.
 - **Component Routing**: Supports granular, file-based routing for **Slash Commands**, **Inline Buttons**, **Keyboard Buttons**, and **Inline Queries (Autocomplete)**. Handlers automatically register themselves on boot without cluttering a central file.
 - **Built-in Execution Guards**: Intercept commands globally before execution. Support for `ownerOnly`, `developerOnly`, `adminOnly`, `privateOnly`, `groupOnly`, missing argument enforcement, and per-user `cooldown` rates natively baked in.
 - **Strict Middleware Architecture**: Middleware execution is strictly ordered (`Commands` > `Inline Buttons` > `Keyboard Buttons` > `Events`) to completely eliminate the infamous Telegraf "swallowed update" collisions.
@@ -63,9 +64,7 @@ This template abstracts away the boilerplate of registering commands and strict 
    > 🔑 *Open `.env` and insert your `BOT_TOKEN`.*
 
 4. **Enable BotFather Features (Optional but Recommended)**
-   Message `@BotFather` on Telegram and use:
-   - `/setcommands` to add your bot's slash commands to the UI menu.
-   - `/setinline` to enable Inline Queries (autocomplete).
+   Message `@BotFather` on Telegram and use `/setinline` to enable Inline Queries (autocomplete). Commands are synced automatically by the bot!
 
 ---
 

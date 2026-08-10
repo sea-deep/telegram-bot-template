@@ -35,7 +35,9 @@ export async function loadCommands(bot) {
         }
         Logger.info(`[CommandHandler] - Loaded ${commandsMap.size} command(s) natively`);
         // Sync commands with Telegram Bot API UI menu
-        const botCommands = Array.from(commandsMap.values()).map((cmd) => ({
+        const botCommands = Array.from(commandsMap.values())
+            .filter((cmd) => !cmd.hideFromMenu)
+            .map((cmd) => ({
             command: cmd.name.toLowerCase(),
             description: cmd.description || cmd.name,
         }));

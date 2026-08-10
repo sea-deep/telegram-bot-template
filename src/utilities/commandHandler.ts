@@ -49,10 +49,12 @@ export async function loadCommands(bot: Telegraf<Context>): Promise<void> {
     Logger.info(`[CommandHandler] - Loaded ${commandsMap.size} command(s) natively`);
 
     // Sync commands with Telegram Bot API UI menu
-    const botCommands = Array.from(commandsMap.values()).map((cmd) => ({
-      command: cmd.name.toLowerCase(),
-      description: cmd.description || cmd.name,
-    }));
+    const botCommands = Array.from(commandsMap.values())
+      .filter((cmd) => !cmd.hideFromMenu)
+      .map((cmd) => ({
+        command: cmd.name.toLowerCase(),
+        description: cmd.description || cmd.name,
+      }));
 
     if (botCommands.length > 0) {
       bot.telegram.setMyCommands(botCommands).catch((err) => {
