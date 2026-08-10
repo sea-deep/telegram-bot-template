@@ -1,48 +1,43 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
+import { Telegraf } from "telegraf";
+import { env } from "./utilities/env.js";
+import { Logger } from "./helpers/Logger.js";
+import { loadCommands } from "./utilities/commandHandler.js";
+import { loadEvents } from "./utilities/eventHandler.js";
+import { loadActions } from "./utilities/actionHandler.js";
+import { loadTextTriggers } from "./utilities/textHandler.js";
+Logger.info("Initializing Telegram Bot...");
+export const bot = new Telegraf(env.BOT_TOKEN);
+// Monkey-patch bot.command to prevent its use and enforce our custom robust router
+bot.command = () => {
+    throw new Error("⚠️ Telegraf's native `bot.command` is disabled in this repository to prevent middleware order collisions. Please create a command file in `src/commands/` instead!");
+};
+// Global Error Catching Middleware
+bot.catch((err, ctx) => {
+    Logger.error(`Unhandled error on update ${ctx.updateType}:`, err);
 });
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.bot = void 0;
-const dotenv = __importStar(require("dotenv"));
-dotenv.config();
-const telegraf_1 = require("telegraf");
-exports.bot = new telegraf_1.Telegraf(process.env.BOT_TOKEN);
-import("./Utils/commandHandler.js");
-import("./Utils/eventHandler.js");
-import("./Utils/actionHandler.js");
-import("./Utils/textHandler.js");
-console.log("[INFO] - Bot is online");
-exports.bot.launch();
-process.once('SIGINT', () => exports.bot.stop('SIGINT'));
-process.once('SIGTERM', () => exports.bot.stop('SIGTERM'));
+async function main() {
+    try {
+        // Load all dynamic handlers
+        await loadCommands(bot);
+        await loadEvents(bot);
+        await loadActions(bot);
+        await loadTextTriggers(bot);
+        // Launch Telegraf Bot
+        await bot.launch();
+        Logger.success("🚀 Telegram Bot is online and polling for updates!");
+    }
+    catch (error) {
+        Logger.error("Failed to start bot:", error);
+        process.exit(1);
+    }
+}
+main();
+// Enable graceful shutdown
+process.once("SIGINT", () => {
+    Logger.info("SIGINT signal received. Stopping bot...");
+    bot.stop("SIGINT");
+});
+process.once("SIGTERM", () => {
+    Logger.info("SIGTERM signal received. Stopping bot...");
+    bot.stop("SIGTERM");
+});
