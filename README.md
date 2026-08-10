@@ -19,7 +19,6 @@ Where to place your code:
 - `src/commands/`: Place strict Slash Commands (`/command`) here.
 - `src/inlineButtons/`: Place handlers for `callback_query` (Inline Keyboard button clicks) here.
 - `src/keyboardButtons/`: Place strict handlers for Reply Keyboard text clicks here.
-- `src/textTriggers/`: Place regex-based text matchers (e.g., bad word filters) here.
 - `src/events/`: Place your standard Telegram event listeners (like `new_chat_members`, `inline_query`) here.
 
 ---
@@ -28,9 +27,9 @@ Where to place your code:
 
 This template abstracts away the boilerplate of registering commands and strict middleware routing for the Telegram API. 
 
-- **Component Routing**: Supports granular, file-based routing for **Slash Commands**, **Inline Buttons**, **Keyboard Buttons**, **Inline Queries (Autocomplete)**, and generic **Text Triggers**. Handlers automatically register themselves on boot without cluttering a central file.
+- **Component Routing**: Supports granular, file-based routing for **Slash Commands**, **Inline Buttons**, **Keyboard Buttons**, and **Inline Queries (Autocomplete)**. Handlers automatically register themselves on boot without cluttering a central file.
 - **Built-in Execution Guards**: Intercept commands globally before execution. Support for `ownerOnly`, `developerOnly`, `adminOnly`, `privateOnly`, `groupOnly`, missing argument enforcement, and per-user `cooldown` rates natively baked in.
-- **Strict Middleware Architecture**: Middleware execution is strictly ordered (`Commands` > `Inline Buttons` > `Keyboard Buttons` > `Text Triggers` > `Events`) to completely eliminate the infamous Telegraf "swallowed update" collisions.
+- **Strict Middleware Architecture**: Middleware execution is strictly ordered (`Commands` > `Inline Buttons` > `Keyboard Buttons` > `Events`) to completely eliminate the infamous Telegraf "swallowed update" collisions.
 - **Centralized Configuration**: All environment secrets are validated safely through Zod in `env.ts`, while all non-secret logic (like permission messages and feature toggles) are extracted into `config.ts` for clean separation.
 
 > 📖 **[Read the Wiki](https://github.com/sea-deep/telegram-bot-template/wiki)** to learn how to create these commands and map your components.

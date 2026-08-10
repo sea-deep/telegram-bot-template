@@ -5,7 +5,6 @@ import { loadCommands } from "./utilities/commandHandler.js";
 import { loadEvents } from "./utilities/eventHandler.js";
 import { loadInlineButtons } from "./utilities/inlineButtonHandler.js";
 import { loadKeyboardButtons } from "./utilities/keyboardButtonHandler.js";
-import { loadTextTriggers } from "./utilities/textHandler.js";
 
 Logger.info("Initializing Telegram Bot...");
 
@@ -22,8 +21,7 @@ async function main() {
     await loadCommands(bot);        // 1. Slash Commands (bot.command)
     await loadInlineButtons(bot);   // 2. Callback Queries (bot.action)
     await loadKeyboardButtons(bot); // 3. Reply Keyboards (bot.hears)
-    await loadTextTriggers(bot);    // 4. Regular Text Triggers (bot.hears)
-    await loadEvents(bot);          // 5. Catch-all Events (bot.on)
+    await loadEvents(bot);          // 4. Catch-all Events (bot.on)
 
     // Launch Telegraf Bot
     await bot.launch();
