@@ -19,7 +19,7 @@ bot.catch((err, ctx) => {
 async function main() {
   try {
     // Load all dynamic handlers strictly in this order to prevent middleware collisions:
-    await loadCommands(bot);        // 1. Slash Commands (bot.on('message') router)
+    await loadCommands(bot);        // 1. Slash Commands (bot.command)
     await loadInlineButtons(bot);   // 2. Callback Queries (bot.action)
     await loadKeyboardButtons(bot); // 3. Reply Keyboards (bot.hears)
     await loadTextTriggers(bot);    // 4. Regular Text Triggers (bot.hears)
