@@ -11,15 +11,37 @@
 
 ---
 
-## 📁 Repository Structure
+## 🧩 Where to Place Your Code
 
-Where to place your code:
+The template relies on file-based routing to keep your logic strictly organized:
 
 - `src/configs/config.ts`: Define your bot's static configurations, developer IDs, and global reply messages here.
 - `src/commands/`: Place strict Slash Commands (`/command`) here.
 - `src/inlineButtons/`: Place handlers for `callback_query` (Inline Keyboard button clicks) here.
 - `src/keyboardButtons/`: Place strict handlers for Reply Keyboard text clicks here.
 - `src/events/`: Place your standard Telegram event listeners (like `new_chat_members`, `inline_query`) here.
+
+---
+
+## 📁 Detailed Project Structure
+
+For advanced developers, here is a complete breakdown of the underlying architecture:
+
+```text
+telegram-bot-template/
+├── src/
+│   ├── configs/           # Centralized configuration (config.ts)
+│   ├── structures/        # TypeScript interfaces (Command, Event, InlineButton)
+│   ├── utilities/         # Core engine loaders (commandHandler, eventHandler, env)
+│   ├── helpers/           # Helper classes (Logger)
+│   ├── commands/          # ➔ Your Slash Commands
+│   ├── events/            # ➔ Your Telegram Events & Inline Queries
+│   ├── inlineButtons/     # ➔ Your Callback Queries
+│   ├── keyboardButtons/   # ➔ Your Text/Keyboard Triggers
+│   └── index.ts           # Main entry point (registers loaders & launches bot)
+├── .env.example           # Environment template
+└── package.json           # Dependencies and scripts
+```
 
 ---
 
