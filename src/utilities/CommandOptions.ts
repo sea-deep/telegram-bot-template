@@ -1,4 +1,4 @@
-import { Context } from "telegraf";
+import { BotContext } from "../structures/BotContext.js";
 import { Command } from "../structures/Command.js";
 import { env } from "./env.js";
 import { Logger } from "../helpers/Logger.js";
@@ -22,7 +22,7 @@ const cooldowns = new Map<string, number>();
  * Returns true if execution is permitted, false otherwise.
  */
 export async function checkCommandGuards(
-  ctx: Context,
+  ctx: BotContext,
   command: Command,
   args: string[]
 ): Promise<boolean> {

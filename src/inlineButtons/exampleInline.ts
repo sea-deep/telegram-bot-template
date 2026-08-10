@@ -2,7 +2,7 @@ import { InlineButton } from "../structures/InlineButton.js";
 import { Logger } from "../helpers/Logger.js";
 
 const exampleInline: InlineButton = {
-  name: /btn_(.+)/,
+  customId: /btn_(.+)/,
   execute: async (ctx) => {
     const buttonId = ctx.match?.[1] || "unknown";
     Logger.debug(`User clicked callback button: ${buttonId}`);

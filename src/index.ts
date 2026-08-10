@@ -1,14 +1,20 @@
-import { Telegraf } from "telegraf";
+import { Telegraf, session } from "telegraf";
+import { BotContext } from "./structures/BotContext.js";
 import { env } from "./utilities/env.js";
 import { Logger } from "./helpers/Logger.js";
 import { loadCommands } from "./utilities/commandHandler.js";
 import { loadEvents } from "./utilities/eventHandler.js";
 import { loadInlineButtons } from "./utilities/inlineButtonHandler.js";
 import { loadKeyboardButtons } from "./utilities/keyboardButtonHandler.js";
+import { loadScenes, stage } from "./utilities/sceneHandler.js";
 
 Logger.info("Initializing Telegram Bot...");
 
-export const bot = new Telegraf(env.BOT_TOKEN);
+export const bot = new Telegraf<BotContext>(env.BOT_TOKEN);
+
+// Apply Session and Stage Middleware BEFORE loading route handlers
+bot.use(session());
+bot.use(stage.middleware());
 
 // Global Error Catching Middleware
 bot.catch((err, ctx) => {
@@ -18,10 +24,11 @@ bot.catch((err, ctx) => {
 async function main() {
   try {
     // Load all dynamic handlers strictly in this order to prevent middleware collisions:
-    await loadCommands(bot);        // 1. Slash Commands (bot.command)
-    await loadInlineButtons(bot);   // 2. Callback Queries (bot.action)
-    await loadKeyboardButtons(bot); // 3. Reply Keyboards (bot.hears)
-    await loadEvents(bot);          // 4. Catch-all Events (bot.on)
+    await loadScenes();             // 1. Scenes (Registers to Stage)
+    await loadCommands(bot);        // 2. Slash Commands (bot.command)
+    await loadInlineButtons(bot);   // 3. Callback Queries (bot.action)
+    await loadKeyboardButtons(bot); // 4. Reply Keyboards (bot.hears)
+    await loadEvents(bot);          // 5. Catch-all Events (bot.on)
 
     // Launch Telegraf Bot
     await bot.launch();

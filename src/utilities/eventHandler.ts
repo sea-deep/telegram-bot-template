@@ -1,10 +1,14 @@
-import { Telegraf, Context } from "telegraf";
+import { Telegraf } from "telegraf";
+import { BotContext } from "../structures/BotContext.js";
 import { Event } from "../structures/Event.js";
 import { resolveFiles } from "./pathResolver.js";
 import { Logger } from "../helpers/Logger.js";
 
-export async function loadEvents(bot: Telegraf<Context>): Promise<void> {
+export const eventsMap = new Map<string, Event>();
+
+export async function loadEvents(bot: Telegraf<BotContext>): Promise<void> {
   try {
+    eventsMap.clear();
     const fileUrls = await resolveFiles("events");
     let count = 0;
 

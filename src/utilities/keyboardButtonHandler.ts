@@ -1,11 +1,12 @@
-import { Telegraf, Context } from "telegraf";
+import { Telegraf } from "telegraf";
+import { BotContext } from "../structures/BotContext.js";
 import { KeyboardButton, KeyboardContext } from "../structures/KeyboardButton.js";
 import { resolveFiles } from "./pathResolver.js";
 import { Logger } from "../helpers/Logger.js";
 
 export const keyboardButtonsMap = new Map<string | RegExp | Array<string | RegExp>, KeyboardButton>();
 
-export async function loadKeyboardButtons(bot: Telegraf<Context>): Promise<void> {
+export async function loadKeyboardButtons(bot: Telegraf<BotContext>): Promise<void> {
   keyboardButtonsMap.clear();
 
   try {

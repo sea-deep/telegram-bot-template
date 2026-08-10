@@ -1,12 +1,13 @@
-import { Context, Telegraf } from "telegraf";
+import { Telegraf } from "telegraf";
+import { BotContext } from "./BotContext.js";
 import { Update } from "telegraf/types";
 
 export type EventFilter =
-  | Parameters<Telegraf<Context>["on"]>[0]
+  | Parameters<Telegraf<BotContext>["on"]>[0]
   | ((update: Update) => boolean);
 
 export interface Event {
   type: EventFilter | EventFilter[];
   disabled?: boolean;
-  execute: (ctx: Context, bot: Telegraf<Context>) => Promise<void> | void;
+  execute: (ctx: BotContext, bot: Telegraf<BotContext>) => Promise<void> | void;
 }

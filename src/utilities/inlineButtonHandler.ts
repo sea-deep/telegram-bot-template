@@ -1,11 +1,12 @@
-import { Telegraf, Context } from "telegraf";
+import { Telegraf } from "telegraf";
+import { BotContext } from "../structures/BotContext.js";
 import { InlineButton } from "../structures/InlineButton.js";
 import { resolveFiles } from "./pathResolver.js";
 import { Logger } from "../helpers/Logger.js";
 
 export const inlineButtonsMap = new Map<string | RegExp | string[], InlineButton>();
 
-export async function loadInlineButtons(bot: Telegraf<Context>): Promise<void> {
+export async function loadInlineButtons(bot: Telegraf<BotContext>): Promise<void> {
   inlineButtonsMap.clear();
 
   try {
@@ -15,22 +16,22 @@ export async function loadInlineButtons(bot: Telegraf<Context>): Promise<void> {
       const module = await import(fileUrl);
       const button: InlineButton = module.default;
 
-      if (!button || !button.name) {
+      if (!button || !button.customId) {
         continue;
       }
 
       if (button.disabled) {
-        Logger.debug(`Skipping disabled inline button: ${button.name}`);
+        Logger.debug(`Skipping disabled inline button: ${button.customId}`);
         continue;
       }
 
-      inlineButtonsMap.set(button.name, button);
+      inlineButtonsMap.set(button.customId, button);
 
-      bot.action(button.name, async (ctx) => {
+      bot.action(button.customId, async (ctx) => {
         try {
           await button.execute(ctx, bot);
         } catch (error) {
-          Logger.error(`Error executing inline button ${button.name}:`, error);
+          Logger.error(`Error executing inline button ${button.customId}:`, error);
         }
       });
     }

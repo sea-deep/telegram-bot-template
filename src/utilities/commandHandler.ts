@@ -1,4 +1,5 @@
-import { Telegraf, Context } from "telegraf";
+import { Telegraf } from "telegraf";
+import { BotContext } from "../structures/BotContext.js";
 import { Command } from "../structures/Command.js";
 import { resolveFiles } from "./pathResolver.js";
 import { checkCommandGuards } from "./CommandOptions.js";
@@ -7,7 +8,7 @@ import { env } from "./env.js";
 
 export const commandsMap = new Map<string, Command>();
 
-export async function loadCommands(bot: Telegraf<Context>): Promise<void> {
+export async function loadCommands(bot: Telegraf<BotContext>): Promise<void> {
   commandsMap.clear();
 
   try {

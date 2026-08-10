@@ -1,4 +1,5 @@
-import { Context, Telegraf } from "telegraf";
+import { Telegraf } from "telegraf";
+import { BotContext } from "./BotContext.js";
 import { CommandOptions } from "../utilities/CommandOptions.js";
 
 export interface Command {
@@ -14,5 +15,5 @@ export interface Command {
   hideFromMenu?: boolean;
   options?: CommandOptions;
   disabled?: boolean;
-  execute: (ctx: Context, bot: Telegraf<Context>, args: string[]) => Promise<void> | void;
+  execute: (ctx: BotContext, bot: Telegraf<BotContext>, args: string[]) => Promise<void> | void;
 }
