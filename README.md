@@ -23,28 +23,6 @@ The template relies on file-based routing to keep your logic strictly organized:
 
 ---
 
-## 📁 Detailed Project Structure
-
-For advanced developers, here is a complete breakdown of the underlying architecture:
-
-```text
-telegram-bot-template/
-├── src/
-│   ├── configs/           # Centralized configuration (config.ts)
-│   ├── structures/        # TypeScript interfaces (Command, Event, InlineButton)
-│   ├── utilities/         # Core engine loaders (commandHandler, eventHandler, env)
-│   ├── helpers/           # Helper classes (Logger)
-│   ├── commands/          # ➔ Your Slash Commands
-│   ├── events/            # ➔ Your Telegram Events & Inline Queries
-│   ├── inlineButtons/     # ➔ Your Callback Queries
-│   ├── keyboardButtons/   # ➔ Your Text/Keyboard Triggers
-│   └── index.ts           # Main entry point (registers loaders & launches bot)
-├── .env.example           # Environment template
-└── package.json           # Dependencies and scripts
-```
-
----
-
 ## ✨ Features
 
 This template abstracts away the boilerplate of registering commands and strict middleware routing for the Telegram API. 
@@ -96,6 +74,26 @@ This template abstracts away the boilerplate of registering commands and strict 
 | :--- | :--- | :--- |
 | **Development** | `npm run dev` | Runs the bot with hot-reloading via `tsx`. |
 | **Production** | `npm run build && npm start` | Compiles the TypeScript to `dist/` and starts the Node process. |
+
+---
+
+## 📁 Detailed Project Structure
+
+```text
+telegram-bot-template/
+├── src/
+│   ├── configs/           # Centralized configuration (config.ts)
+│   ├── structures/        # TypeScript interfaces (Command, Event, InlineButton)
+│   ├── utilities/         # Core engine loaders (commandHandler, eventHandler, env)
+│   ├── helpers/           # Helper classes (Logger)
+│   ├── commands/          # ➔ Your Slash Commands
+│   ├── events/            # ➔ Your Telegram Events & Inline Queries
+│   ├── inlineButtons/     # ➔ Your Callback Queries
+│   ├── keyboardButtons/   # ➔ Your Text/Keyboard Triggers
+│   └── index.ts           # Main entry point (registers loaders & launches bot)
+├── .env.example           # Environment template
+└── package.json           # Dependencies and scripts
+```
 
 ---
 
