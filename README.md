@@ -1,200 +1,158 @@
-# Telegram Bot Template
+# Telegram Bot Template 🚀
 
-A powerful and easy-to-use template for creating Telegram bots using Telegraf.js and TypeScript. This template provides a structured approach to building feature-rich bots with proper separation of concerns. This readme was written by GitHub Copilot cuz I'm lazy.
+A production-ready, state-of-the-art template for building Telegram bots using **Telegraf v4**, **TypeScript**, and **Node.js ESM**.
 
-## 🌟 Features
+---
 
-- 🔌 Modular architecture with handlers for commands, events, text triggers, and actions
-- 📂 Organized folder structure for easy maintenance
-- 🔄 Hot reloading for development
-- 🛠️ TypeScript for type safety and better development experience
-- 🔧 Built-in error handling
-- 🚀 Easy deployment configuration
+## 🌟 Key Features
 
-## 📋 Prerequisites
+- ⚡ **ESM Native (`"type": "module"`)**: Fully modernized with Node ESM imports & TypeScript NodeNext resolution.
+- 🛡️ **Execution Guards (`CommandOptions.ts`)**: Built-in flags for `ownerOnly`, `adminOnly`, `privateOnly`, `groupOnly`, `cooldown`, and `disabled`.
+- 🔐 **Zod Environment Validation (`env.ts`)**: Validates environment variables (`BOT_TOKEN`, `OWNER_IDS`, `NODE_ENV`) at startup.
+- 🎯 **Strict Type Safety**: 100% strictly typed with zero `any` usage.
+- 🔄 **Dynamic Path Loader (`pathResolver.ts`)**: Seamless file loading supporting both `.ts` (dev via `tsx`) and `.js` (prod via `dist/`).
+- 📁 **Command Categorization**: Dynamic command categories for structured `/help` listings.
+- 🤖 **Auto Telegram UI Menu Sync (`setMyCommands`)**: Registers slash commands automatically in Telegram UI autocomplete menus upon bot launch.
+- 🎨 **Telegraf `fmt` Utilities**: Type-safe message formatting with `telegraf/format`.
+- 🐳 **Docker & Docker Compose Ready**: Multi-stage `Dockerfile` (`node:20-alpine`) for production deployments.
 
-- Node.js (v14 or newer)
-- npm or yarn
-- A Telegram Bot Token (obtainable from [@BotFather](https://t.me/BotFather))
+---
 
-## 🚀 Getting Started
+## 📁 Project Structure
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/sea-deep/telegram-bot-template.git MyBot
-cd MyBot
+```
+telegram-bot-template/
+├── src/
+│   ├── structures/         # Type contracts (Command, Event, Action, TextTrigger)
+│   │   ├── Command.ts
+│   │   ├── Event.ts
+│   │   ├── Action.ts
+│   │   └── TextTrigger.ts
+│   ├── utilities/          # Loaders, environment, guards, path resolver
+│   │   ├── commandHandler.ts
+│   │   ├── eventHandler.ts
+│   │   ├── actionHandler.ts
+│   │   ├── textHandler.ts
+│   │   ├── CommandOptions.ts
+│   │   ├── env.ts
+│   │   └── pathResolver.ts
+│   ├── helpers/            # Helper utilities
+│   │   └── Logger.ts
+│   ├── commands/           # Bot slash commands (/start, /help, /ping, etc.)
+│   ├── events/             # Bot event listeners (newChatMembers, etc.)
+│   ├── actions/            # Inline keyboard callback query handlers
+│   ├── textTriggers/       # Text triggers and reply keyboard handlers
+│   └── index.ts            # Main application entrypoint
+├── Dockerfile              # Multi-stage production container build
+├── docker-compose.yml      # Docker compose configuration
+├── tsconfig.json           # TypeScript configuration (ESM NodeNext)
+├── package.json            # NPM scripts & dependencies
+└── .env.example            # Environment variables template
 ```
 
-### 2. Install dependencies
+---
+
+## 🚀 Quick Start
+
+### 1. Clone & Install
 
 ```bash
+git clone https://github.com/sea-deep/telegram-bot-template.git my-bot
+cd my-bot
 npm install
 ```
 
-### 3. Set up environment variables
+### 2. Configure Environment
 
-Create a `.env` file in the root directory:
+Copy `.env.example` to `.env` and fill in your details:
 
+```env
+BOT_TOKEN="your_bot_token_from_botfather"
+OWNER_IDS="123456789,987654321"
+NODE_ENV="development"
 ```
-BOT_TOKEN=your_telegram_bot_token_here
-```
 
-### 4. Build and start the bot
+### 3. Development Mode
+
+Run with live watch & reload via `tsx`:
 
 ```bash
-npm run start
+npm run dev
 ```
 
-## 📚 Project Structure
+### 4. Build & Production Start
 
-```
-MyBot/
-├── src/
-│   ├── Commands/         # Command handlers (/start, /help, etc.)
-│   ├── Events/           # Event handlers (new joins, photos, etc.)
-│   ├── TextTriggers/     # Text message triggers
-│   ├── Actions/          # Callback query handlers
-│   ├── Utils/            # Utility functions and handlers
-│   │   ├── commandHandler.ts
-│   │   ├── eventHandler.ts
-│   │   ├── textHandler.ts
-│   │   └── actionHandler.ts
-│   └── index.ts          # Entry point
-├── dist/                 # Compiled JavaScript files
-├── .env                  # Environment variables
-└── package.json          # Project metadata and dependencies
+Compile TypeScript to `dist/` and start the production process:
+
+```bash
+npm start
 ```
 
-## 📝 How to Use
+---
 
-### Creating a Command
+## 🛡️ Built-in Command Execution Guards
 
-Create a new file in the `src/Commands` directory:
+Specify guards directly on your `Command` definitions:
 
 ```typescript
-// src/Commands/start.ts
-import { Command } from "../Utils/commandHandler";
-import { Context, Markup } from "telegraf";
+import { fmt, bold } from "telegraf/format";
+import { Command } from "../structures/Command.js";
 
-export default {
-  name: "start",
-  description: "Start the bot",
-  execute: async (ctx: Context) => {
-    await ctx.reply(
-      "Welcome to ReefBot! 🌊",
-      Markup.keyboard([
-        ["🐠 🌊 🐙 🐬 Parameters", "⚙️ 🔧 🔨 🛠️ Settings"],
-        ["❓ 💭 💡 📝 Help"]
-      ]).resize()
-    );
-  }
-} as Command;
+const adminCommand: Command = {
+  name: "admin",
+  description: "Group admin command",
+  category: "Admin",
+  options: {
+    adminOnly: true,    // Restrict to group admins
+    groupOnly: true,    // Restrict to group chats
+    cooldown: 5,        // 5 seconds cooldown per user
+  },
+  execute: async (ctx) => {
+    await ctx.reply(fmt`${bold("Admin panel accessed!")}`);
+  },
+};
+
+export default adminCommand;
 ```
 
-### Creating an Event Handler
+### Supported Guards:
+| Flag | Description |
+| :--- | :--- |
+| `ownerOnly` | Restricts command to IDs listed in `OWNER_IDS`. |
+| `adminOnly` | Restricts command to group administrators. |
+| `privateOnly` | Restricts command to private direct messages. |
+| `groupOnly` | Restricts command to group/supergroup chats. |
+| `cooldown` | Cooldown period in seconds per user per command. |
+| `disabled` | Disables the command entirely. |
 
-Create a new file in the `src/Events` directory:
+---
 
-```typescript
-// src/Events/message.ts
-import { Event } from "../Utils/eventHandler";
-import { Context } from "telegraf";
+## 🐳 Docker Deployment
 
-export default {
-  type: "message",
-  execute: async (ctx: Context) => {
-    console.log("Received a message:", ctx.message);
-    // Handle the message event
-  }
-} as Event;
+Run with Docker Compose:
+
+```bash
+docker-compose up -d --build
 ```
 
-### Creating a Text Trigger
+Or build and run manually:
 
-Create a new file in the `src/TextTriggers` directory:
-
-```typescript
-// src/TextTriggers/hello.ts
-import { TextTrigger, TextContext } from "../Utils/textHandler";
-
-export default {
-  name: /hello/i,  // Can be a string or RegExp
-  execute: async (ctx: TextContext) => {
-    await ctx.reply("Hello there! 👋");
-  }
-} as TextTrigger;
+```bash
+docker build -t telegram-bot .
+docker run -d --env-file .env telegram-bot
 ```
 
-### Creating an Action Handler
+---
 
-Create a new file in the `src/Actions` directory:
+## 📦 Scripts Summary
 
-```typescript
-// src/Actions/buttonClick.ts
-import { Action, ActionContext } from "../Utils/actionHandler";
+- `npm run dev`: Start bot in dev watch mode with `tsx`.
+- `npm run build`: Clean `dist` and compile TypeScript.
+- `npm start`: Build and launch production server (`node dist/index.js`).
+- `npm run clean`: Remove output build directory.
 
-export default {
-  name: "button_click",  // Matches the callback_data of your buttons
-  execute: async (ctx: ActionContext) => {
-    await ctx.answerCbQuery("Button clicked!");
-    await ctx.editMessageText("You clicked the button!");
-  }
-} as Action;
-```
-
-## 📦 Available Scripts
-
-- `npm run start` - Build and start the bot
-- `npm run build` - Build the project
-- `npm run clean` - Remove the dist directory
-
-## 🔧 Advanced Configuration
-
-### Adding Middleware
-
-You can add middleware to your bot in the `index.ts` file:
-
-```typescript
-import { session } from "telegraf";
-
-// Add session support
-bot.use(session());
-
-// Add custom middleware
-bot.use(async (ctx, next) => {
-  const start = new Date();
-  await next();
-  const ms = new Date().getTime() - start.getTime();
-  console.log("Response time: %sms", ms);
-});
-```
-
-## 🚀 Deployment
-
-### Hosting Providers
-
-- [Render](https://render.com)
-- [DigitalOcean](https://www.digitalocean.com)
-- [Railway](https://railway.app)
-- [Fly.io](https://fly.io)
-
-### Basic Deployment Steps
-
-1. Build your project:
-   ```bash
-   npm run build
-   ```
-
-2. Start in production:
-   ```bash
-   node dist/index.js
-   ```
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/yourusername/reefbot/issues).
+---
 
 ## 📄 License
 
-This project is [ISC](https://opensource.org/licenses/ISC) licensed.
+[ISC](https://opensource.org/licenses/ISC)
