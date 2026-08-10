@@ -6,6 +6,8 @@ import { loadEvents } from "./utilities/eventHandler.js";
 import { loadInlineButtons } from "./utilities/inlineButtonHandler.js";
 import { loadKeyboardButtons } from "./utilities/keyboardButtonHandler.js";
 import { loadTextTriggers } from "./utilities/textHandler.js";
+import { loadInlineQueries } from "./utilities/inlineQueryHandler.js";
+import { loadChosenResults } from "./utilities/chosenResultHandler.js";
 
 Logger.info("Initializing Telegram Bot...");
 
@@ -20,10 +22,12 @@ async function main() {
   try {
     // Load all dynamic handlers strictly in this order to prevent middleware collisions:
     await loadCommands(bot);        // 1. Slash Commands (bot.command)
-    await loadInlineButtons(bot);   // 2. Callback Queries (bot.action)
-    await loadKeyboardButtons(bot); // 3. Reply Keyboards (bot.hears)
-    await loadTextTriggers(bot);    // 4. Regular Text Triggers (bot.hears)
-    await loadEvents(bot);          // 5. Catch-all Events (bot.on)
+    await loadInlineQueries(bot);   // 2. Inline Queries (bot.inlineQuery)
+    await loadChosenResults(bot);   // 3. Chosen Inline Results (bot.on('chosen_inline_result'))
+    await loadInlineButtons(bot);   // 4. Callback Queries (bot.action)
+    await loadKeyboardButtons(bot); // 5. Reply Keyboards (bot.hears)
+    await loadTextTriggers(bot);    // 6. Regular Text Triggers (bot.hears)
+    await loadEvents(bot);          // 7. Catch-all Events (bot.on)
 
     // Launch Telegraf Bot
     await bot.launch();
