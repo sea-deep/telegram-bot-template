@@ -30,8 +30,6 @@ This template abstracts away the boilerplate of registering commands and strict 
 - **Automatic Command Syncing**: Command metadata (descriptions and names) automatically sync to the Telegram UI menu when the bot starts. You can exclude specific commands using the `hideFromMenu` property.
 - **Component Routing**: Supports granular, file-based routing for **Slash Commands**, **Inline Buttons**, **Keyboard Buttons**, and **Inline Queries (Autocomplete)**. Handlers automatically register themselves on boot without cluttering a central file.
 - **Built-in Execution Guards**: Intercept commands globally before execution. Support for `ownerOnly`, `developerOnly`, `adminOnly`, `privateOnly`, `groupOnly`, missing argument enforcement, and per-user `cooldown` rates natively baked in.
-- **Strict Middleware Architecture**: Middleware execution is strictly ordered (`Commands` > `Inline Buttons` > `Keyboard Buttons` > `Events`) to completely eliminate the infamous Telegraf "swallowed update" collisions.
-- **Centralized Configuration**: All environment secrets are validated safely through Zod in `env.ts`, while all non-secret logic (like permission messages and feature toggles) are extracted into `config.ts` for clean separation.
 
 > 📖 **[Read the Wiki](https://github.com/sea-deep/telegram-bot-template/wiki)** to learn how to create these commands and map your components.
 
