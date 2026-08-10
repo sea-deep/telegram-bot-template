@@ -1,29 +1,35 @@
 {
   "name": "telegram-bot-template",
   "version": "1.0.0",
-  "description": "A simple template for creating a Telegram bots using Telegraf",
+  "description": "A production-ready template for creating Telegram bots using Telegraf and TypeScript",
   "keywords": [
-    "reef",
     "telegram",
-    "telegraf"
+    "telegraf",
+    "bot",
+    "typescript",
+    "esm"
   ],
   "license": "ISC",
   "author": "sea-deep",
-  "type": "commonjs",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc && node dist/index.js",
-    "clean": "rimraf dist",
-    "build": "npm run clean && npx tsc"
+    "dev": "tsx --watch src/index.ts",
+    "build": "rimraf dist && tsc",
+    "start": "npm run build && node dist/index.js",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
     "glob": "^11.0.1",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
-    "rimraf": "^5.0.10"
+    "rimraf": "^5.0.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
   }
 }
+

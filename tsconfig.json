@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "node16",
-    "moduleResolution": "node16",
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,15 +19,16 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
-    "strictBuiltinIteratorReturn": true,
     "alwaysStrict": true,
     "useUnknownInCatchVariables": true,
     "noEmit": false
   },
   "exclude": [
-    "./dist"
+    "./dist",
+    "./node_modules"
   ],
   "include": [
     "./src/**/*.ts"
   ]
 }
+
