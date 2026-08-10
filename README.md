@@ -1,158 +1,100 @@
-# Telegram Bot Template 🚀
-
-A production-ready, state-of-the-art template for building Telegram bots using **Telegraf v4**, **TypeScript**, and **Node.js ESM**.
-
----
-
-## 🌟 Key Features
-
-- ⚡ **ESM Native (`"type": "module"`)**: Fully modernized with Node ESM imports & TypeScript NodeNext resolution.
-- 🛡️ **Execution Guards (`CommandOptions.ts`)**: Built-in flags for `ownerOnly`, `adminOnly`, `privateOnly`, `groupOnly`, `cooldown`, and `disabled`.
-- 🔐 **Zod Environment Validation (`env.ts`)**: Validates environment variables (`BOT_TOKEN`, `OWNER_IDS`, `NODE_ENV`) at startup.
-- 🎯 **Strict Type Safety**: 100% strictly typed with zero `any` usage.
-- 🔄 **Dynamic Path Loader (`pathResolver.ts`)**: Seamless file loading supporting both `.ts` (dev via `tsx`) and `.js` (prod via `dist/`).
-- 📁 **Command Categorization**: Dynamic command categories for structured `/help` listings.
-- 🤖 **Auto Telegram UI Menu Sync (`setMyCommands`)**: Registers slash commands automatically in Telegram UI autocomplete menus upon bot launch.
-- 🎨 **Telegraf `fmt` Utilities**: Type-safe message formatting with `telegraf/format`.
-- 🐳 **Docker & Docker Compose Ready**: Multi-stage `Dockerfile` (`node:20-alpine`) for production deployments.
+<div align="center">
+  <h1>🤖 Telegram Bot Template</h1>
+  <p><i>A structured, modular, and professional template for building robust <a href="https://telegraf.js.org/">Telegraf v4</a> bots in TypeScript.</i></p>
+  
+  <p>
+    <a href="https://telegraf.js.org/"><img src="https://img.shields.io/badge/Telegraf-v4-blue?style=for-the-badge&logo=telegram" alt="Telegraf v4" /></a>
+    <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-Ready-blue?style=for-the-badge&logo=typescript" alt="TypeScript" /></a>
+    <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-v20+-green?style=for-the-badge&logo=node.js" alt="Node.js" /></a>
+  </p>
+</div>
 
 ---
 
-## 📁 Project Structure
+## 📁 Repository Structure
 
-```
-telegram-bot-template/
-├── src/
-│   ├── structures/         # Type contracts (Command, Event, Action, TextTrigger)
-│   │   ├── Command.ts
-│   │   ├── Event.ts
-│   │   ├── Action.ts
-│   │   └── TextTrigger.ts
-│   ├── utilities/          # Loaders, environment, guards, path resolver
-│   │   ├── commandHandler.ts
-│   │   ├── eventHandler.ts
-│   │   ├── actionHandler.ts
-│   │   ├── textHandler.ts
-│   │   ├── CommandOptions.ts
-│   │   ├── env.ts
-│   │   └── pathResolver.ts
-│   ├── helpers/            # Helper utilities
-│   │   └── Logger.ts
-│   ├── commands/           # Bot slash commands (/start, /help, /ping, etc.)
-│   ├── events/             # Bot event listeners (newChatMembers, etc.)
-│   ├── actions/            # Inline keyboard callback query handlers
-│   ├── textTriggers/       # Text triggers and reply keyboard handlers
-│   └── index.ts            # Main application entrypoint
-├── Dockerfile              # Multi-stage production container build
-├── docker-compose.yml      # Docker compose configuration
-├── tsconfig.json           # TypeScript configuration (ESM NodeNext)
-├── package.json            # NPM scripts & dependencies
-└── .env.example            # Environment variables template
-```
+Where to place your code:
+
+- `src/configs/config.ts`: Define your bot's static configurations, developer IDs, and global reply messages here.
+- `src/commands/`: Place strict Slash Commands (`/command`) here.
+- `src/inlineButtons/`: Place handlers for `callback_query` (Inline Keyboard button clicks) here.
+- `src/keyboardButtons/`: Place strict handlers for Reply Keyboard text clicks here.
+- `src/textTriggers/`: Place regex-based text matchers (e.g., bad word filters) here.
+- `src/events/`: Place your standard Telegram event listeners (like `new_chat_members`, `inline_query`) here.
 
 ---
 
-## 🚀 Quick Start
+## ✨ Features
 
-### 1. Clone & Install
+This template abstracts away the boilerplate of registering commands and strict middleware routing for the Telegram API. 
 
-```bash
-git clone https://github.com/sea-deep/telegram-bot-template.git my-bot
-cd my-bot
-npm install
-```
+- **Component Routing**: Supports granular, file-based routing for **Slash Commands**, **Inline Buttons**, **Keyboard Buttons**, **Inline Queries (Autocomplete)**, and generic **Text Triggers**. Handlers automatically register themselves on boot without cluttering a central file.
+- **Built-in Execution Guards**: Intercept commands globally before execution. Support for `ownerOnly`, `developerOnly`, `adminOnly`, `privateOnly`, `groupOnly`, missing argument enforcement, and per-user `cooldown` rates natively baked in.
+- **Strict Middleware Architecture**: Middleware execution is strictly ordered (`Commands` > `Inline Buttons` > `Keyboard Buttons` > `Text Triggers` > `Events`) to completely eliminate the infamous Telegraf "swallowed update" collisions.
+- **Centralized Configuration**: All environment secrets are validated safely through Zod in `env.ts`, while all non-secret logic (like permission messages and feature toggles) are extracted into `config.ts` for clean separation.
 
-### 2. Configure Environment
-
-Copy `.env.example` to `.env` and fill in your details:
-
-```env
-BOT_TOKEN="your_bot_token_from_botfather"
-OWNER_IDS="123456789,987654321"
-NODE_ENV="development"
-```
-
-### 3. Development Mode
-
-Run with live watch & reload via `tsx`:
-
-```bash
-npm run dev
-```
-
-### 4. Build & Production Start
-
-Compile TypeScript to `dist/` and start the production process:
-
-```bash
-npm start
-```
+> 📖 **[Read the Wiki](https://github.com/sea-deep/telegram-bot-template/wiki)** to learn how to create these commands and map your components.
 
 ---
 
-## 🛡️ Built-in Command Execution Guards
+## 🚀 Quickstart
 
-Specify guards directly on your `Command` definitions:
+### Prerequisites
+- [Node.js](https://nodejs.org/) v20 or higher
+- A Telegram Bot Token (from [@BotFather](https://t.me/BotFather) on Telegram)
 
-```typescript
-import { fmt, bold } from "telegraf/format";
-import { Command } from "../structures/Command.js";
+### Installation
 
-const adminCommand: Command = {
-  name: "admin",
-  description: "Group admin command",
-  category: "Admin",
-  options: {
-    adminOnly: true,    // Restrict to group admins
-    groupOnly: true,    // Restrict to group chats
-    cooldown: 5,        // 5 seconds cooldown per user
-  },
-  execute: async (ctx) => {
-    await ctx.reply(fmt`${bold("Admin panel accessed!")}`);
-  },
-};
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/sea-deep/telegram-bot-template.git
+   cd telegram-bot-template
+   ```
 
-export default adminCommand;
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### Supported Guards:
-| Flag | Description |
-| :--- | :--- |
-| `ownerOnly` | Restricts command to IDs listed in `OWNER_IDS`. |
-| `adminOnly` | Restricts command to group administrators. |
-| `privateOnly` | Restricts command to private direct messages. |
-| `groupOnly` | Restricts command to group/supergroup chats. |
-| `cooldown` | Cooldown period in seconds per user per command. |
-| `disabled` | Disables the command entirely. |
+3. **Configure Environment**
+   Copy the example environment file and update it with your credentials:
+   ```bash
+   cp .env.example .env
+   ```
+   > 🔑 *Open `.env` and insert your `BOT_TOKEN`.*
+
+4. **Enable BotFather Features (Optional but Recommended)**
+   Message `@BotFather` on Telegram and use:
+   - `/setcommands` to add your bot's slash commands to the UI menu.
+   - `/setinline` to enable Inline Queries (autocomplete).
 
 ---
 
-## 🐳 Docker Deployment
+## 💻 Running the Bot
 
-Run with Docker Compose:
-
-```bash
-docker-compose up -d --build
-```
-
-Or build and run manually:
-
-```bash
-docker build -t telegram-bot .
-docker run -d --env-file .env telegram-bot
-```
+| Mode | Command | Description |
+| :--- | :--- | :--- |
+| **Development** | `npm run dev` | Runs the bot with hot-reloading via `tsx`. |
+| **Production** | `npm run build && npm start` | Compiles the TypeScript to `dist/` and starts the Node process. |
 
 ---
 
-## 📦 Scripts Summary
+## 🤝 Contributing, Issues, & Discussions
 
-- `npm run dev`: Start bot in dev watch mode with `tsx`.
-- `npm run build`: Clean `dist` and compile TypeScript.
-- `npm start`: Build and launch production server (`node dist/index.js`).
-- `npm run clean`: Remove output build directory.
+We welcome all contributions! If you have a question, want to suggest a feature, or found a bug:
+- **Discussions**: Have an idea or need help? Start a thread in our [Discussions](#) tab.
+- **Issues**: Found a bug? Open an [Issue](#) with reproducible steps.
+- **Contributing**: Check out our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on submitting Pull Requests.
+
+---
+
+## 📚 Documentation
+
+> [!IMPORTANT]  
+> Detailed technical guides, including a comprehensive **Beginner's Getting Started Guide**, can be found in the **[GitHub Wiki](https://github.com/sea-deep/telegram-bot-template/wiki)**.
 
 ---
 
 ## 📄 License
 
-[ISC](https://opensource.org/licenses/ISC)
+This project is licensed under the [GPL-3.0 License](./LICENSE).
